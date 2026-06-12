@@ -112,7 +112,7 @@
 
 @layer utilities {
   .section-padding {
-    @apply px-4 sm:px-6 lg:px-8 py-16 lg:py-24;
+    @apply px-4 sm:px-6 lg:px-8 py-4 lg:py-6;
   }
   .container-narrow {
     @apply max-w-7xl mx-auto;

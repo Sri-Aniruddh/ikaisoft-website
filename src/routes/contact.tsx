@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Mail, Phone, MapPin, ArrowRight, CheckCircle, Send } from "lucide-react";
 import SectionHeading from "../components/SectionHeading";
-
+import { sendContactMessage } from "../api/contactApi";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
@@ -19,15 +19,25 @@ function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
-    }, 1000);
-  };
 
+    try {
+      const data = await sendContactMessage(form);
+
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        alert("Failed to send message");
+      }
+    } catch (err) {
+      alert("Server error");
+    }
+
+    setLoading(false);
+  };
   return (
     <>
       <section className="section-padding bg-primary text-primary-foreground">
@@ -134,7 +144,7 @@ function ContactPage() {
       <section className="h-80 md:h-96 w-full">
         <iframe
           title="Ikaisoft Location"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3561.0!2d80.85!3d26.85!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDUxJzAwLjAiTiA4MMKwNTEnMDAuMCJF!5e0!3m2!1sen!2sin!4v1!5m2!1sen!2sin"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3560.218340188328!2d80.8345128!3d26.833006899999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399bff1c0306d919%3A0x61ac296e90a8349!2sIkaisoft%20Consultancy%20Services!5e0!3m2!1sen!2sin!4v1777917951787!5m2!1sen!2sin"
           className="w-full h-full border-0"
           allowFullScreen
           loading="lazy"

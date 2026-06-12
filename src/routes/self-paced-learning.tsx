@@ -4,7 +4,7 @@ import { BookOpen, Users, Brain, FileText, Award, GraduationCap, ArrowRight, Che
 import PageBanner from "../components/PageBanner";
 import SectionHeading from "../components/SectionHeading";
 import learningBanner from "../assets/learning-banner.jpg";
-
+import { sendEnrollForm } from "../api/enrollApi";
 export const Route = createFileRoute("/self-paced-learning")({
   head: () => ({
     meta: [
@@ -16,6 +16,7 @@ export const Route = createFileRoute("/self-paced-learning")({
   component: LearningPage,
 });
 
+
 const offerings = [
   { icon: GraduationCap, title: "Job-Oriented Courses", desc: "Industry-aligned courses in web development, data science, machine learning, cloud computing, and more — designed to make you job-ready." },
   { icon: Users, title: "Internships", desc: "Gain real-world experience with structured internship programs that connect you with live projects and industry mentors." },
@@ -25,18 +26,45 @@ const offerings = [
   { icon: Award, title: "Certifications", desc: "Earn industry-recognized certifications upon completing courses to boost your career prospects." },
 ];
 
+
 function LearningPage() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", course: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    course: "",
+    message: "",
+  });
+
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
-    }, 1000);
+
+    try {
+      const res = await sendEnrollForm(form);
+
+      if (res.success) {
+        setSubmitted(true);
+        setForm({
+          name: "",
+          email: "",
+          phone: "",
+          course: "",
+          message: "",
+        });
+      } else {
+        alert("Failed to submit");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Server error");
+    }
+
+    setLoading(false);
   };
 
   return (

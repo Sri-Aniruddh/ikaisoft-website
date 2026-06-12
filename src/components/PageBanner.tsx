@@ -6,7 +6,7 @@ interface PageBannerProps {
 
 export default function PageBanner({ title, subtitle, imageSrc }: PageBannerProps) {
   return (
-    <section className="relative h-64 md:h-80 overflow-hidden">
+    <section className="relative h-64 md:h-66 overflow-hidden">
       <img src={imageSrc} alt={title} className="absolute inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0 hero-gradient" />
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
